@@ -5,17 +5,24 @@
 #*Identifies alternative options based on shopping transaction history using open-web Corporate Social Responsibility company ratings.
 #*Makes one recommendation at a time so as not to flood the customer.
 #*Allows opt out of the recommender service.
-#*Allows option to see a detailed responsibility assessment of a company.
+#*Provides a link to detailed responsibility assessment for a company, and alternatives listed by responsibility rating.
 
-#Platforms and datasets used: Microsoft Flow, Twilio, Capital One Hackathon API, Sharepoint (company lookup/simulated DB), CSRHub company ratings.
+#Use cases / benefits: Ethically conscious customers who are interested in using the power of big data to help them make informed buying decisions. Contribution to Capital One corporate social responsibility strategy by using finance data for good and demonstrating commitment to ethical principles to current and prospective customers.
+
+#Platforms and datasets used: Microsoft Flow, Twilio, Capital One Hackathon API, CSRHub company ratings.
+
+#Limitations of the proof of concept version: Please note that the proof of concept mainly demonstrates the Twilio workflow. The response is generic and not linked to the individual data yielded by the API.
 
 #Summary of operation:
 #*SMS sent to customer saying they have signed up for ethical buying recommendations and asking if they'd like one.
 #*Transaction history is preloaded for better performance. (For the purpose of the simulation, random customer data is generated).
-#*If buyer indicates yes, the program lists transactions from the last 30 days in descending order of value. Using the top 10 (a performance consideration), it refers to the database for alternative options.
-#*One recommendation at a time is provided, including a tinyurl linking to a more detailed responsibility assessment for the company. 
-#*Customer is asked if they'd like another recommendation.
+#*If buyer indicates yes, the program picks a company from the list of transactions that is below its sector average CSRHub rating and provides a link to its CSRHub report, and a list of other companies in the sector ordered by rating (descending),
 #*If customer replies No to ethical buying recommendations, they are given options to unsubscribe.
+#*Error capture provides an option to be connected to the bank's contact centre (simulated) if the workflow fails.
+
+#Features not currently functioning:
+*Logging of customer-specific transaction data, summing to order by transaction volume (can't see a way to compose and work with lists and custom variables in Twilio).
+*Ability to request further recommendations after first (as above).
 
 #Assumptions: [i]Customer has appropriately consented to opt in to the service and be contacted about it. [ii]Transaction data from the API yields merchant ID. [iii]Lookup of merchant ID to responsibility credentials. [iv] Merchant ID exists in the responsibility lookup.
 
