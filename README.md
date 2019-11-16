@@ -14,10 +14,11 @@
 
 #Summary of operation:
 #*SMS sent to customer saying they have signed up for ethical buying recommendations and asking if they'd like one.
-#*Transaction history is preloaded for better performance.
+#*Transaction history is preloaded for better performance. (For the purpose of the simulation, random customer data is generated).
 #*If buyer indicates yes, the program lists transactions from the last 30 days in descending order of value. Using the top 10 (a performance consideration), it refers to the database for alternative options.
 #*One recommendation at a time is provided, including a tinyurl linking to a more detailed responsibility assessment for the company. 
 #*Customer is asked if they'd like another recommendation.
+#*If customer replies No to ethical buying recommendations, they are given options to unsubscribe.
 
 #Assumptions: [i]Customer has appropriately consented to opt in to the service and be contacted about it. [ii]Transaction data from the API yields merchant ID. [iii]Lookup of merchant ID to responsibility credentials. [iv] Merchant ID exists in the responsibility lookup.
 
