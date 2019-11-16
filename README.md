@@ -12,7 +12,7 @@
 
 #Platforms and datasets used: Microsoft Flow, Twilio, Capital One Hackathon API, CSRHub company ratings.
 
-#Limitations of the proof of concept version: Please note that the proof of concept mainly demonstrates the Twilio workflow. The response is generic and not linked to the individual data yielded by the API.
+#Limitations of the proof of concept version: Please note that the proof of concept mainly demonstrates the Twilio workflow. The response is generic and not linked to the individual data yielded by the API. The Twilio trial service appears to have poor latency and may take several minutes to reply to SMS (or be instantaneous).
 
 #Summary of operation:
 #*SMS sent to customer saying they have signed up for ethical buying recommendations and asking if they'd like one.
