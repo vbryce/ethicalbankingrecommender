@@ -1,0 +1,548 @@
+{
+  "description": "ethicalbuyingrecommender",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "InitialState",
+      "properties": {
+        "offset": {
+          "x": 20,
+          "y": -360
+        },
+        "flow_url": "https://webhooks.twilio.com/v1/Accounts/ACce112a2c9f2701acbe9f1caac606b7d1/Flows/FW9949ad35b2fbe960ec256a242dc9cfe7"
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF73ec14a3d97e1f92e96aefc3485e4f03",
+          "uuid": "ec7d86e9-ca72-458c-a22b-f3c84f66d61d"
+        },
+        {
+          "event": "incomingCall",
+          "conditions": [],
+          "next": null,
+          "uuid": "2b564bad-0089-44cf-8255-211057556b58"
+        },
+        {
+          "event": "incomingRequest",
+          "conditions": [],
+          "next": "FF73ec14a3d97e1f92e96aefc3485e4f03",
+          "uuid": "a0261d4a-a55d-42a2-857e-0faee49d10c6"
+        }
+      ],
+      "sid": "FF2a90a5dee9b95358f545cf88d113a925"
+    },
+    {
+      "name": "send_and_reply_1",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": 130,
+          "y": -110
+        },
+        "body": "It's Capital One here. Your ethical buying recommendations are ready - reply Yes, or reply Stop to opt out.",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": null,
+        "service": null,
+        "channel": null,
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFfad67e80f718f88c61789a9c90fdbf3e",
+          "uuid": "3f646a9b-fe5d-4d9d-adc9-238ac669dad1"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "2b7386cd-5bad-44c6-a767-8af0b18551e8"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "5b324315-71b7-452e-b3f3-4e1809cb8c8f"
+        }
+      ],
+      "sid": "FF73ec14a3d97e1f92e96aefc3485e4f03"
+    },
+    {
+      "name": "split_order",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": 150,
+          "y": 200
+        },
+        "input": "{{widgets.send_and_reply_1.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FFbc475d701f03f522b993183749a2c1d5",
+          "uuid": "2f6c1bfc-0948-4ac5-9e6a-0d5be7f59bca"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "Yes",
+              "type": "matches_any_of",
+              "arguments": [
+                "{{widgets.send_and_reply_1.inbound.Body}}"
+              ],
+              "value": "yes, y, ye, ok, Yes, Y, YES"
+            }
+          ],
+          "next": "FF90d51676f747e399b044c8cdd69c9c30",
+          "uuid": "d99ede94-99f2-49e2-9d74-477c5021ae7f"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value matches_any_of stop, stp, sto, opt out",
+              "type": "matches_any_of",
+              "arguments": [
+                "{{widgets.send_and_reply_1.inbound.Body}}"
+              ],
+              "value": "stop, stp, sto, opt out, STOP"
+            }
+          ],
+          "next": "FF0d9ee7b3b3fe5643468da9a9cba29d77",
+          "uuid": "6ed5222f-a21e-4b4c-b3fa-2d090ffb1a0b"
+        }
+      ],
+      "sid": "FFfad67e80f718f88c61789a9c90fdbf3e"
+    },
+    {
+      "name": "send_and_reply_connecting",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": -590,
+          "y": 580
+        },
+        "body": "We didn't quite get that. Would you like to be connected to the Capital One customer service team?",
+        "from": "{{flow.channel.address}}",
+        "timeout": 180,
+        "save_response_as": null,
+        "media_url": null,
+        "service": null,
+        "channel": null,
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF8a04a3d2f82103b1044e2b840460563f",
+          "uuid": "69325ec4-29f2-48d4-8b65-c0a462071007"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "0d83c47f-bcc5-46ae-b741-92737ad349ec"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "83cd61a9-32e2-4b5a-b793-a6197eb672c8"
+        }
+      ],
+      "sid": "FFbc475d701f03f522b993183749a2c1d5"
+    },
+    {
+      "name": "split_confirm",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -770,
+          "y": 860
+        },
+        "input": "{{widgets.send_and_reply_connecting.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": null,
+          "uuid": "2f3d3aef-7ac4-4d75-9d91-389764b05dd6"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "y, yes",
+              "type": "matches_any_of",
+              "arguments": [
+                "{{widgets.send_and_reply_connecting.inbound.Body}}"
+              ],
+              "value": "y, yes, ok, Y, YES, OK"
+            }
+          ],
+          "next": "FF6e23383caa8741803c23e879632ba2f8",
+          "uuid": "d9b67872-35c9-4385-894b-eb52ac72dc0a"
+        }
+      ],
+      "sid": "FF8a04a3d2f82103b1044e2b840460563f"
+    },
+    {
+      "name": "call_contact_centre",
+      "type": "Dial",
+      "properties": {
+        "offset": {
+          "x": -900,
+          "y": 1420
+        },
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "record": false,
+        "timeout": null
+      },
+      "transitions": [
+        {
+          "event": "answered",
+          "conditions": [],
+          "next": "FF1a373cee0fec97543c3c1978147088a0",
+          "uuid": "47eced85-1e67-425b-842e-083aaea7e7f1"
+        },
+        {
+          "event": "answeredByMachine",
+          "conditions": [],
+          "next": null,
+          "uuid": "e30c8def-5b83-4ee4-84d3-9e41018ad0b4"
+        },
+        {
+          "event": "busy",
+          "conditions": [],
+          "next": null,
+          "uuid": "bb27d1e0-f551-4779-976c-98251019a6a4"
+        },
+        {
+          "event": "noAnswer",
+          "conditions": [],
+          "next": null,
+          "uuid": "d53a501e-ccab-440f-896f-6beb14f17dbe"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "142ff8c1-ee71-44a1-bf4a-5f8527e81f92"
+        }
+      ],
+      "sid": "FF6e23383caa8741803c23e879632ba2f8"
+    },
+    {
+      "name": "get_recommendation_createaccount",
+      "type": "Webhook",
+      "properties": {
+        "offset": {
+          "x": 180,
+          "y": 590
+        },
+        "method": "POST",
+        "url": "https://sandbox.capitalone.co.uk/developer-services-platform-pr/api/data/",
+        "body": "curl -X post \"https://sandbox.capitalone.co.uk/developer-services-platform-pr/api/data/accounts/create\" \\\n    -H \"Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYmYiOjE1NzM4MjM4MjQsInBsYyI6IjVkY2VjNzRhZTk3NzAxMGUwM2FkNjQ5NSIsImV4cCI6MTU3NDAzNTE5OSwiZGV2ZWxvcGVyX2lkIjoiMTE2Mzg5ZjZlNjQzYTA3MjY1YjZhOGJkN2U3MzhhOWEzNTZhMzA0MTdhMDdhM2MxOTY5YjJmZmE2OGQyMTMyMyJ9.TBWF55AWlNyO8BKypPidPgeNC7-XCNA2pqni3oiwKnG0ho1Tfe_qZXWbLm-MXgYw43-cUJnfqf7jOGHrQ3B45QT4jqpo1cxUqAjFyVLUnbhyOZihHoUnA1pWfDgBt3p-GLqekl8h1xJ77hcMgaXTH6jRdF0op9Sdq4nzAaChwjjxzbWaxT4Dt6iXNtlmQqAxlIR8KMhjhViS1lUXRveZt_yb-dplZ4C0JZhugVvCkg22ceaaf_u9qLATAd-kSLoekpYEBNjrEbzKYVh-cGTIojx2HMdGPY9TOgN7zhwiBw3XIHnODfwrYslm67TDqdhs2mdnyZRKOoB14PieyfJLww\" \\\n    -H \"Content-Type: application/json\" \\\n    -H \"version: 1.0\" \\\n    -d \"{ \"quantity\": 1 }\"",
+        "timeout": 3600,
+        "parameters": null,
+        "save_response_as": null,
+        "content_type": "application/json;charset=utf-8"
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": "FFd50e685056b11c2b826b41db116b0b98",
+          "uuid": "350d4e35-1c6c-4acb-b396-af3c2b895a05"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": "FF864e594426f208e9443948c473bfeb1e",
+          "uuid": "d91c3ae9-fd43-497e-9548-0075a84184e3"
+        }
+      ],
+      "sid": "FF90d51676f747e399b044c8cdd69c9c30"
+    },
+    {
+      "name": "optout_confirmation",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": 660,
+          "y": 440
+        },
+        "body": "We have opted you out of ethical buying recommendations.",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": "FFba947545fa483072d8cdd69b61773b70",
+          "uuid": "61d502ad-2ebc-47b4-a5d1-3c216353a89a"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": "FF864e594426f208e9443948c473bfeb1e",
+          "uuid": "9267a810-1845-4a7f-93e4-2a617b7ada13"
+        }
+      ],
+      "sid": "FF0d9ee7b3b3fe5643468da9a9cba29d77"
+    },
+    {
+      "name": "send_recommendation",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": 170,
+          "y": 1270
+        },
+        "body": "You recently purchased from Amazon, whose csrhub.com rating of 62% is below the average for Electronic Shopping companies (details at http://bit.ly/32U5MYy). Other options: http://bit.ly/2CLqtLE",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": "http://bit.ly/32U5MYy",
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFba947545fa483072d8cdd69b61773b70",
+          "uuid": "40b7b92a-ae89-486e-a23a-882f8eedb820"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": "FFba947545fa483072d8cdd69b61773b70",
+          "uuid": "6b345da0-da71-48a6-a463-819cb1afc4a2"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": "FF864e594426f208e9443948c473bfeb1e",
+          "uuid": "4a3366fa-192c-4eff-a7c2-1b8e4fb767f4"
+        }
+      ],
+      "sid": "FF3a26bc8a899e065f4340067a3952125c"
+    },
+    {
+      "name": "get_recommendation_getaccountdetails",
+      "type": "Webhook",
+      "properties": {
+        "offset": {
+          "x": 170,
+          "y": 990
+        },
+        "method": "POST",
+        "url": "https://sandbox.capitalone.co.uk/developer-services-platform-pr/api/data/",
+        "body": "curl -X get \"https://sandbox.capitalone.co.uk/developer-services-platform-pr/api/data/accounts/$accountID\" \\\n    -H \"Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJuYmYiOjE1NzM4MjM4MjQsInBsYyI6IjVkY2VjNzRhZTk3NzAxMGUwM2FkNjQ5NSIsImV4cCI6MTU3NDAzNTE5OSwiZGV2ZWxvcGVyX2lkIjoiMTE2Mzg5ZjZlNjQzYTA3MjY1YjZhOGJkN2U3MzhhOWEzNTZhMzA0MTdhMDdhM2MxOTY5YjJmZmE2OGQyMTMyMyJ9.TBWF55AWlNyO8BKypPidPgeNC7-XCNA2pqni3oiwKnG0ho1Tfe_qZXWbLm-MXgYw43-cUJnfqf7jOGHrQ3B45QT4jqpo1cxUqAjFyVLUnbhyOZihHoUnA1pWfDgBt3p-GLqekl8h1xJ77hcMgaXTH6jRdF0op9Sdq4nzAaChwjjxzbWaxT4Dt6iXNtlmQqAxlIR8KMhjhViS1lUXRveZt_yb-dplZ4C0JZhugVvCkg22ceaaf_u9qLATAd-kSLoekpYEBNjrEbzKYVh-cGTIojx2HMdGPY9TOgN7zhwiBw3XIHnODfwrYslm67TDqdhs2mdnyZRKOoB14PieyfJLww\" \\\n    -H \"Content-Type: application/json\" \\\n    -H \"version: 1.0\"",
+        "timeout": null,
+        "parameters": null,
+        "save_response_as": null,
+        "content_type": "application/json;charset=utf-8"
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": "FF3a26bc8a899e065f4340067a3952125c",
+          "uuid": "76baf392-acd0-4643-8a4b-60343e35899e"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": "FF864e594426f208e9443948c473bfeb1e",
+          "uuid": "2f43cbef-af4d-48b3-9257-769d725a4189"
+        }
+      ],
+      "sid": "FFd50e685056b11c2b826b41db116b0b98"
+    },
+    {
+      "name": "error_capture",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": -320,
+          "y": 1030
+        },
+        "body": "I'm sorry, there seems to be a problem with the service. Would you like us to connect you to our Customer contact centre?",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFb015baad882371209c8fe208ee8e5020",
+          "uuid": "993eb0fd-f324-4730-a9d4-9a32720e1b02"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "35a0b7e7-43de-47cd-9b99-a1b9af9f38aa"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "9b90b3d1-3f94-4a8d-9da0-82fba7d6ec1f"
+        }
+      ],
+      "sid": "FF864e594426f208e9443948c473bfeb1e"
+    },
+    {
+      "name": "split_1",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -420,
+          "y": 1580
+        },
+        "input": "{{widgets.error_capture.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": null,
+          "uuid": "4a373efa-8efe-4505-9b6e-bba69884837e"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value matches_any_of yes, y, ye, ok, help",
+              "type": "matches_any_of",
+              "arguments": [
+                "{{widgets.error_capture.inbound.Body}}"
+              ],
+              "value": "yes, y, ye, ok, help, Yes, Y"
+            }
+          ],
+          "next": "FF6e23383caa8741803c23e879632ba2f8",
+          "uuid": "7511e6ea-e17e-498b-960c-4bf6b1f6df3e"
+        }
+      ],
+      "sid": "FFb015baad882371209c8fe208ee8e5020"
+    },
+    {
+      "name": "anything_else",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": 490,
+          "y": 1620
+        },
+        "body": "Is there anything else you'd like us to contact you about? Reply yes and we'll arrange a call from our Contact centre.",
+        "from": "{{flow.channel.address}}",
+        "timeout": 3600,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFb015baad882371209c8fe208ee8e5020",
+          "uuid": "6af1133d-0521-4f47-a942-2a205760fed9"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "3f0e4693-6974-4f75-8c99-9b069bb4d2b5"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "66e343f7-77f7-49bf-920f-4e05811aaea2"
+        }
+      ],
+      "sid": "FFba947545fa483072d8cdd69b61773b70"
+    },
+    {
+      "name": "say_play_1",
+      "type": "SayPlay",
+      "properties": {
+        "offset": {
+          "x": -910,
+          "y": 1660
+        },
+        "say": "Hello, this is the Capital One contact centre - how can I help?",
+        "play": null,
+        "voice": "man",
+        "language": "en-GB",
+        "loop": 1,
+        "digits": null
+      },
+      "transitions": [
+        {
+          "event": "audioComplete",
+          "conditions": [],
+          "next": null,
+          "uuid": "fa7dc979-5994-4fa3-a529-fe40f0054768"
+        }
+      ],
+      "sid": "FF1a373cee0fec97543c3c1978147088a0"
+    },
+    {
+      "name": "function_1",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": 740,
+          "y": 1162
+        },
+        "url": null,
+        "timeout": null,
+        "parameters": null
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": null,
+          "uuid": "4c29d82b-be64-47cc-8f9b-93a71b07e7f2"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "ffe22d08-6c90-418f-a796-0a0bc72400d8"
+        }
+      ],
+      "sid": "FF4ac77dce0300d52a2593fa35a1bf0d8c"
+    }
+  ]
+}
