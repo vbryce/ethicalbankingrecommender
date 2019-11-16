@@ -7,10 +7,7 @@
 #*Allows opt out of the recommender service.
 #*Allows option to see a detailed responsibility assessment of a company.
 
-#Platforms used:
-#*Microsoft Flow
-#*Twilio
-#*Sharepoint (lookup library/simulated DB)
+#Platforms used: Microsoft Flow, Twilio, Capital One Hackathon API, Sharepoint (company lookup/simulated DB).
 
 #Summary of operation:
 #*SMS sent to customer saying they have signed up for ethical buying recommendations and asking if they'd like one.
